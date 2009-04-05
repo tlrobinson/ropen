@@ -11,7 +11,7 @@ These are great when working locally, but obviously do no work remotely. Often w
 ropen's Solution
 ----------------
 
-The ropen project solves this problem using two simple shell scripts, which make use of MacFuse's sshfs. You run the "ropen" program on your remote machine(s) when you want to open a remote file locally (this is equivalent to the OS X "open" command). The "ropend" daemon runs on your local OS X machine waiting for open requests, and the "ropen.php" PHP script proxies requests from ropen to ropend.
+The [ropen](http://github.com/tlrobinson/ropen) tool solves this problem using two simple shell scripts, which make use of MacFuse's sshfs. You run the "ropen" program on your remote machine(s) when you want to open a remote file locally (this is equivalent to the OS X "open" command). The "ropend" daemon runs on your local OS X machine waiting for open requests, and the "ropen.php" PHP script proxies requests from ropen to ropend.
 
 How it works
 ------------
