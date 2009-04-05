@@ -26,6 +26,7 @@ Installation
 4. Copy ropen to each remote machine you wish to use it from, and fill in ROPEN_SECRET
 5. Copy your local machine's SSH public key (usually ~/.ssh/id_rsa.pub) the authorized_keys file of each remote (~/.ssh/authorized_keys). When connecting to the remote machine via ssh there should not be any prompts to the user.
 6. (Optional) Install ropen.php on a webserver with PHP enabled, and edit ROPEN_URL in both ropen and ropend.
+7. (Optional) Uncomment and set the SSH_CONNECT_STRING in each ropen to be the username, host, and port combination the local machine needs to use to login. Normally this is detected automatically if you are logged in SSH.
 
 "mate", "see", etc
 ------------------
@@ -56,3 +57,8 @@ ropen may have a number of security issues. If the ROPEN_SECRET and ROPEN_URL ar
 Using a large random ROPEN_SECRET and placing ropen.php under SSL and HTTP authentication helps improve the security and is suggested.
 
 There is no guarantee of any kind when using the default ROPEN_URL (currently http://tlrobinson.net/ropen/ropen.php)
+
+Bugs
+----
+
+* SSH ports other 22 are not yet supported
