@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# fill in a large random string which matches ropen's
+ROPEN_SECRET=''
+
+# replace this with your own if you want
+ROPEN_URL='http://tlrobinson.net/ropen/ropen.php'
+
+# where the sshfs filesystems will be mounted
+ROPEN_MOUNT="$HOME/.ropen"
+
+
+# TODO: enforce whitelists of allowed servers and applications?
+
+while [ "$#" -gt "0" ]
+do
+	case $1 in
+		-s)
+			shift
+			ROPEN_SECRET=$1
+			;;
+		*)	
+			;;
+	esac
+	shift
+done
+
+if [ ! "$ROPEN_SECRET" ]; then
+	echo "Please fill in \$ROPEN_SECRET in $0 with a random string or use the -s argument"
+	exit 1
+fi
+
+# purge the queue on startup
+curl -b ropen=$ROPEN_SECRET $ROPEN_URL?mode=purge
+
+while true; do
+	RESULT=`curl -b ropen=$ROPEN_SECRET $ROPEN_URL?mode=get 2> /dev/null`
+	
+	if [ ! "$RESULT" = '' ]; then
+		unset CONNECT_STRING
+		unset APPLICATION
+		unset REMOTE_PATHS
+		
+		for VALUE in $RESULT; do
+			if [ ! $CONNECT_STRING ]; then
+				CONNECT_STRING=$VALUE
+				MOUNT_PATH=$ROPEN_MOUNT/$CONNECT_STRING
+			elif [ ! $APPLICATION ]; then
+				APPLICATION="$VALUE"
+			else
+				REMOTE_PATHS="$REMOTE_PATHS $MOUNT_PATH$VALUE"
+			fi
+		done	
+
+		if [ ! -d $MOUNT_PATH ]; then
+			echo "=> mkdir -p $MOUNT_PATH"
+			mkdir -p $MOUNT_PATH
+		fi
+
+		if ! mount | grep -q $MOUNT_PATH; then
+			echo "=> sshfs $CONNECT_STRING:/ $MOUNT_PATH"
+			sshfs $CONNECT_STRING:/ $MOUNT_PATH
+			sleep 2
+		fi
+		
+		unset ARGS
+		if [ ! $APPLICATION = '-' ]; then
+			ARGS="-a $APPLICATION"
+		fi
+		
+		echo "=> open $ARGS $REMOTE_PATHS"
+		open $ARGS $REMOTE_PATHS
+		
+		sleep 1
+	fi
+done
