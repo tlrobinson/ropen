@@ -37,7 +37,7 @@ Usage
 Once ropend is running on your local machine, and ropen is in your PATH variable on the remote machine(s), and both are pointing to the same ropen.php and have the same ROPEN_SECRET varialbe or "-s" argument, you can simply use ropen just as you would use "open" on OS X, for example:
 
     ropen /etc/hosts
-    
+
 This will open "/etc/hosts" from the remote machine on your local machine. You can then edit and save it, as long as ropend is running and your connection is open.
 
 You can also specify the Mac OS X application to open the files and directories with (see next section)
@@ -49,7 +49,7 @@ To get "mate" and "see" like commands (which open all files in TextMate or SubEt
 
     alias mate="ropen -a TextMate"
     alias see="ropen -a SubEthaEdit"
- 
+
 Multiple Local Machines
 -----------------------
 
