@@ -5,7 +5,7 @@ session_start();
 
 if (!is_array($_SESSION['queue']))
    $_SESSION['queue'] = array();
-   
+
 switch ($_GET['mode']) {
     case 'put':
         array_push($_SESSION['queue'], array(
@@ -21,6 +21,12 @@ switch ($_GET['mode']) {
         break;
     case 'purge':
         unset($_SESSION['queue']);
+        break;
+    case 'copy':
+        $_SESSION['pasteboard'] = file_get_contents("php://input");
+        break;
+    case 'paste':
+        echo $_SESSION['pasteboard'];
         break;
     default:
         echo 'unknown command';

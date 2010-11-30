@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH="$SELF_PATH/$(basename -- "$0")"
+
+# resolve symlinks
+while [ -h "$SELF_PATH" ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink -- "$SELF_PATH")
+	SELF_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
+
+# ROPEN_HOME is the 2nd ancestor directory of this shell script
+ROPEN_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
+
+source "$ROPEN_HOME/ropen.conf"
+
+
+curl -b "ropen=$ROPEN_SECRET" "$ROPEN_URL?mode=paste"

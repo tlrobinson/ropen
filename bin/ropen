@@ -1,14 +1,19 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# fill in a large random string which matches ropend's
-ROPEN_SECRET=''
+# get the absolute path of the executable
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH="$SELF_PATH/$(basename -- "$0")"
 
-# replace this with your own if you want
-ROPEN_URL='http://tlrobinson.net/ropen/ropen.php'
+# resolve symlinks
+while [ -h "$SELF_PATH" ]; do
+	DIR=$(dirname -- "$SELF_PATH")
+	SYM=$(readlink -- "$SELF_PATH")
+	SELF_PATH=$(cd -- "$DIR" && cd -- $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+done
 
-# uncomment and fill in this if the default user/host detection doesn't work
-#SSH_CONNECT_STRING='user@host'
+# ROPEN_HOME is the 2nd ancestor directory of this shell script
+ROPEN_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
+source "$ROPEN_HOME/ropen.conf"
 
 urlencode() {
 	# http://www.shelldorado.com/scripts/cmds/urlencode
