@@ -86,7 +86,7 @@ do
 done
 
 if [ ! "$ROPEN_SECRET" ]; then
-    echo "Please fill in \$ROPEN_SECRET in $0 with a random string or use the -s argument"
+    echo "Please set \$ROPEN_SECRET to a random string or use the -s argument"
     exit 1
 fi
 

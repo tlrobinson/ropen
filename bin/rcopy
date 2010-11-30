@@ -15,5 +15,20 @@ ROPEN_HOME=$(dirname -- "$(dirname -- "$SELF_PATH")")
 
 source "$ROPEN_HOME/ropen.conf"
 
+while [ "$#" -gt "0" ]
+do
+    case $1 in
+        -s)
+            shift
+            ROPEN_SECRET=$1
+            ;;
+    esac
+    shift
+done
+
+if [ ! "$ROPEN_SECRET" ]; then
+    echo "Please set \$ROPEN_SECRET to a random string or use the -s argument"
+    exit 1
+fi
 
 cat | curl --data-binary @/dev/stdin -b "ropen=$ROPEN_SECRET" "$ROPEN_URL?mode=copy"
